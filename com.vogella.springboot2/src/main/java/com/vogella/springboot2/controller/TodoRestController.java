@@ -1,6 +1,8 @@
 package com.vogella.springboot2.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +47,14 @@ class TodoRestController {
 	@GetMapping("/getTodoById")
 	public Mono<Todo> getTodoById(long id) {
 		return Mono.from(todos.filter(t -> id == t.getId()));
+	}
+	
+	@PostMapping("/newTodo")
+	public Mono<Todo> newTodo(@RequestBody Todo todo){
+	    Mono<Todo> todoMono = Mono.just(todo);
+	    todos = todos.mergeWith(todoMono); 
+	    return todoMono;
+		
 	}
 
 }
