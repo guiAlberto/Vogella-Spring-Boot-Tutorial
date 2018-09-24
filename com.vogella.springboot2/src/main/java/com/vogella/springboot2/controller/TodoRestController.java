@@ -22,6 +22,11 @@ class TodoRestController {
 	public TodoRestController(TodoService todoService) {
 		this.todoService = todoService;
 	}
+	
+	@GetMapping("/createModel")
+	public Flux<Todo> createModel() {
+		return todoService.createModel();
+	}
 
 	@GetMapping("/getTodos")
 	public Flux<Todo> getTodos(@RequestParam(name = "limit", required = false, defaultValue = "-1") long limit) {
