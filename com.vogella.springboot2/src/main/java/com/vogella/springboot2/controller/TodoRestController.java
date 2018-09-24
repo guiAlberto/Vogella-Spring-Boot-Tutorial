@@ -1,6 +1,8 @@
 package com.vogella.springboot2.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,13 +50,19 @@ class TodoRestController {
 	public Mono<Todo> getTodoById(long id) {
 		return Mono.from(todos.filter(t -> id == t.getId()));
 	}
-	
+
 	@PostMapping("/newTodo")
-	public Mono<Todo> newTodo(@RequestBody Todo todo){
-	    Mono<Todo> todoMono = Mono.just(todo);
-	    todos = todos.mergeWith(todoMono); 
-	    return todoMono;
-		
+	public Mono<Todo> newTodo(@RequestBody Todo todo) {
+		Mono<Todo> todoMono = Mono.just(todo);
+		todos = todos.mergeWith(todoMono);
+		return todoMono;
+
+	}
+
+	@DeleteMapping("/deleteTodo/{id}")
+	public Mono<Void> deleteTodo(@PathVariable("id") int id) {
+		todos = todos.filter(todo -> todo.getId() != id);
+		return todos.then();
 	}
 
 }
