@@ -1,11 +1,13 @@
 package com.vogella.springboot2.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vogella.springboot2.domain.Todo;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 class TodoRestController {
@@ -33,8 +35,16 @@ class TodoRestController {
 	}
 
 	@GetMapping("/getTodos")
-	public Flux<Todo> getTodos() {
-		return todos;
+	public Flux<Todo> getTodos(@RequestParam(name = "limit", required = false, defaultValue = "-1") long limit) {
+		if (limit == -1) {
+			return todos;
+		}
+		return todos.take(limit);
+	}
+
+	@GetMapping("/getTodoById")
+	public Mono<Todo> getTodoById(long id) {
+		return Mono.from(todos.filter(t -> id == t.getId()));
 	}
 
 }
