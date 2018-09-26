@@ -53,4 +53,8 @@ public class TodoService {
 	public Mono<Void> deleteTodo(long id) {
 		return todoRepository.deleteById(id);
 	}
+	
+	public Flux<Todo> findBySummary(String summary) {
+		return todoRepository.findBySummaryContainingIgnoreCase(summary);
+	}
 }

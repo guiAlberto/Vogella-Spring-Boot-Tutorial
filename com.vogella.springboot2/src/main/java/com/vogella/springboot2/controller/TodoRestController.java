@@ -49,4 +49,9 @@ class TodoRestController {
 		return todoService.deleteTodo(id);
 	}
 
+	@GetMapping("/findBySummary")
+	public Flux<Todo> findBySummary(@RequestParam String summary) {
+		return todoService.findBySummary(summary);
+	}
+
 }
